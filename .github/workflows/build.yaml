@@ -26,6 +26,3 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencp-shim:${{  github.ref_name }}"
-          build-args: |
-            ACCESS_TOKEN_USR=${{ secrets.ACCESS_TOKEN_USR }}
-            ACCESS_TOKEN_PWD=${{ secrets.ACCESS_TOKEN_PWD }}
