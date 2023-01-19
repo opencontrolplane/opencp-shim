@@ -15,7 +15,7 @@ COPY . .
 
 RUN go build -o main .
 
-FROM alpine:latest
+FROM debian:stable-slim
 
 RUN apk --no-cache add ca-certificates
 
