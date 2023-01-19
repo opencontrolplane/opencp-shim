@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: civo/opencp-shim:${{ github.event.release.tag_name }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencp-shim:${{  github.ref_name }}"
           build-args: |
             ACCESS_TOKEN_USR=${{ secrets.ACCESS_TOKEN_USR }}
             ACCESS_TOKEN_PWD=${{ secrets.ACCESS_TOKEN_PWD }}
