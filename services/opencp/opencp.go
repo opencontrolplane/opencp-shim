@@ -4,16 +4,13 @@ import (
 	// "log"
 	"net/http"
 
-	// "git.civo.com/alejandro/api-v3/api/v1alpha1"
-	// "git.civo.com/alejandro/api-v3/pkg"
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/opencontrolplane/opencp-spec/apis/v1alpha1"
-	clientv3 "go.etcd.io/etcd/client/v3"
+	// clientv3 "go.etcd.io/etcd/client/v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	// "k8s.io/apimachinery/pkg/types"
 )
 
 var (
@@ -37,7 +34,7 @@ func init() {
 	opencpAPI = new(restful.WebService).Path("/apis/opencp.io/v1alpha1").Consumes(restful.MIME_JSON, "application/yaml").Produces(restful.MIME_JSON, "application/yaml")
 }
 
-func NewOpenCP(etcdClient *clientv3.Client) *OpenCP {
+func NewOpenCP() *OpenCP {
 	return &OpenCP{
 		Kubernetes: NewKubernetes(),
 		Domain:     NewDomain(),

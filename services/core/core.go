@@ -7,7 +7,7 @@ import (
 	// "git.civo.com/alejandro/api-v3/pkg"
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
-	clientv3 "go.etcd.io/etcd/client/v3"
+	// clientv3 "go.etcd.io/etcd/client/v3"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// opencpspec "github.com/opencontrolplane/opencp-spec/v1alpha1"
@@ -20,7 +20,7 @@ type Core struct {
 	APIServer APIInterface
 }
 
-func NewCore(etcdClient *clientv3.Client) *Core {
+func NewCore() *Core {
 	// DB Init
 	// db, err := pkg.NewSecretService()
 	// if err != nil {
@@ -28,7 +28,7 @@ func NewCore(etcdClient *clientv3.Client) *Core {
 	// }
 
 	return &Core{
-		Network:   NewNetwork(etcdClient),
+		Network:   NewNetwork(),
 		// Secret:    NewSecret(etcdClient, db),
 		APIServer: NewAPIServer(),
 	}
@@ -50,7 +50,7 @@ func (c Core) API() []*restful.WebService {
 		Writes(metav1.APIResourceList{}).
 		Returns(http.StatusOK, "OK", metav1.APIResourceList{}).
 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-	
+
 	// Namespaces API
 	api.Route(api.GET("/v1/namespaces").To(c.Network.List).
 		//Doc
@@ -110,7 +110,7 @@ func (c Core) API() []*restful.WebService {
 	// 	Writes(corev1.Secret{}).
 	// 	Returns(http.StatusOK, "OK", corev1.Secret{}).
 	// 	Returns(http.StatusUnauthorized, "Unauthorized", nil))
-		
+
 	return []*restful.WebService{api}
 }
 

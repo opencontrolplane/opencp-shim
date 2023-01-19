@@ -28,8 +28,8 @@ type Network struct {
 	EtcdClient *clientv3.Client
 }
 
-func NewNetwork(etcdClient *clientv3.Client) NetworkInterface {
-	return &Network{EtcdClient: etcdClient}
+func NewNetwork() NetworkInterface {
+	return &Network{}
 }
 
 // NetworkList Namespace functions (Civo Newtork)
@@ -87,7 +87,7 @@ func (n Network) List(r *restful.Request, w *restful.Response) {
 			Status:     *network.Status,
 		})
 	}
-		
+
 
 	networkList := corev1.NamespaceList{
 		TypeMeta: metav1.TypeMeta{

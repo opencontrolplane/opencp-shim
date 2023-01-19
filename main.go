@@ -23,14 +23,15 @@ import (
 func main() {
 	app := setup.NewAOpenCP()
 
-	// Config 
+	// Config
 	app.Config = setup.Config("config.yaml")
-	
-	etcdClient, err := setup.Etcd(app.Config)
-	if err != nil {
-		log.Println(err)
-	}
-	app.EtcdClient = etcdClient
+
+	// Disable for now as we are not using it
+	// etcdClient, err := setup.Etcd(app.Config)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// app.EtcdClient = etcdClient
 
 	app.LoginClient = setup.Login(app.Config)
 	app.VirtualMachine = setup.VirtualMachine(app.Config)
@@ -47,9 +48,9 @@ func main() {
 	})
 
 	// Service
-	coreService := core.NewCore(etcdClient)
+	coreService := core.NewCore()
 	apisService := apis.NewAPIGroup()
-	opencpService := opencp.NewOpenCP(etcdClient)
+	opencpService := opencp.NewOpenCP()
 
 	allWebservice := []*restful.WebService{}
 	allWebservice = append(allWebservice, coreService.API()...)
