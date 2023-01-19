@@ -17,8 +17,6 @@ RUN go build -o main .
 
 FROM debian:stable-slim
 
-RUN apk --no-cache add ca-certificates
-
 WORKDIR /app/
 
 COPY --from=builder /app/main .
