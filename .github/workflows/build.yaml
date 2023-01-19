@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencp-shim:${{  github.ref_name }}"
+          tags: alejandrojnm/opencp-shim:${{  github.ref_name }}"
