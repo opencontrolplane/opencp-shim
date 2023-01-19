@@ -1,0 +1,178 @@
+GrpcServer:
+  Host: "localhost:8080"
+EtcdServer:
+  Host:
+    - "localhost:2479"
+ApiResource:
+  - Kind: "VirtualMachine"
+    SingularName: "virtualmachine"
+    Name: "virtualmachines"
+    Version: "v1alpha1"
+    Verbs:
+      - create
+      - delete
+      - get
+      - list
+    Namespaced: true
+    ShortNames:
+      - vm
+      - vms
+  - Kind: "VirtualMachine"
+    SingularName: "virtualMachine"
+    Name: "virtualmachines/status"
+    Version: "v1alpha1"
+    Verbs:
+      - get
+    Namespaced: true
+  - Kind: "KubernetesCluster"
+    SingularName: "kubernetescluster"
+    Name: "kubernetesclusters"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+      - "patch"
+    Namespaced: true
+    ShortNames:
+      - "kcluster"
+      - "kclusters"
+  - Kind: "KubernetesCluster"
+    Name: "kubernetesclusters/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: true
+  - Kind: "Firewall"
+    SingularName: "firewall"
+    Name: "firewalls"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: true
+    ShortNames:
+      - "fw"
+      - "firewalls"
+  - Kind: "Firewall"
+    Name: "firewalls/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: true
+  - Kind: "Domain"
+    SingularName: "domain"
+    Name: "domains"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: false
+    ShortNames:
+      - "dns"
+      - "domains"
+  - Kind: "Domain"
+    Name: "domains/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: false
+  # - Kind: "IP"
+  #   SingularName: "ip"
+  #   Name: "ips"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "create"
+  #     - "delete"
+  #     - "get"
+  #     - "list"
+  #   Namespaced: false
+  #   ShortNames:
+  #     - "ip"
+  # - Kind: "IP"
+  #   Name: "ips/status"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "get"
+  #   Namespaced: false
+  - Kind: "SSHKey"
+    SingularName: "sshkey"
+    Name: "sshkeys"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: false
+    ShortNames:
+      - "sshkey"
+      - "ssh"
+  - Kind: "SSHKey"
+    Name: "sshkeys/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: false
+  # - Kind: "ObjectStorage"
+  #   SingularName: "objectstorage"
+  #   Name: "objectstorages"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "create"
+  #     - "delete"
+  #     - "get"
+  #     - "list"
+  #   Namespaced: false
+  #   ShortNames:
+  #     - "s3"
+  #     - "objectstorage"
+  # - Kind: "ObjectStorage"
+  #   Name: "objectstorages/status"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "get"
+  #   Namespaced: false
+  # - Kind: "ObjectStorageCredential"
+  #   SingularName: "objectstoragecredential"
+  #   Name: "objectstoragecredentials"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "create"
+  #     - "delete"
+  #     - "get"
+  #     - "list"
+  #   Namespaced: false
+  #   ShortNames:
+  #     - "s3credential"
+  #     - "objectstoragecredential"
+  # - Kind: "ObjectStorageCredential"
+  #   Name: "objectstoragecredentials/status"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "get"
+  #   Namespaced: false
+  # - Kind: "Database"
+  #   SingularName: "database"
+  #   Name: "databases"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "create"
+  #     - "delete"
+  #     - "get"
+  #     - "list"
+  #   Namespaced: true
+  #   ShortNames:
+  #     - "db"
+  #     - "dbass"
+  # - Kind: "Database"
+  #   Name: "databases/status"
+  #   Version: "v1alpha1"
+  #   Verbs:
+  #     - "get"
+  #   Namespaced: true
