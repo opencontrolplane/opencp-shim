@@ -20,6 +20,7 @@ FROM debian:stable-slim
 WORKDIR /app/
 
 COPY --from=builder /app/main .
+COPY --from=builder /app/config.yaml .
 
 EXPOSE 4000
 
