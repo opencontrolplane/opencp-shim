@@ -21,6 +21,7 @@ WORKDIR /app/
 
 COPY --from=builder /app/main .
 COPY --from=builder /app/config.yaml .
+ADD ssl ./ssl
 
 EXPOSE 4000
 
