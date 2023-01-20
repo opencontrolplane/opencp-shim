@@ -55,7 +55,7 @@ func (d *Domain) List(r *restful.Request, w *restful.Response) {
 		}
 	}
 
-	// Get all the networks again and return them
+	// Get all the domains again and return them
 	var allDomains *opencpgrpc.DomainList
 	if len(allFields) > 0 {
 		q := allFields["metadata.name"]
@@ -105,11 +105,6 @@ func (d *Domain) List(r *restful.Request, w *restful.Response) {
 
 	domainList := []opencpapi.Domain{}
 	for _, domain := range allDomains.Items {
-
-		// 	lasyApply, err := pkg.LastAppliedConfig(ctx, etcdObjectReader, "", &domain, "Domain")
-		// 	if err != nil {
-		// 		log.Println(err)
-		// 	}
 
 		domainSpec := opencpapi.DomainSpec{}
 		domainStatus := &opencpapi.DomainStatus{}
@@ -193,46 +188,8 @@ func (d *Domain) Get(r *restful.Request, w *restful.Response) {
 		return
 	}
 
-	//Get LastAppliedConfig
-	// lasyApply, err := pkg.LastAppliedConfig(ctx, etcdObjectReader, "", dnsDomain, "Domain")
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
-	// allRecords := []v1alpha1.DomainRecords{}
-	// for _, record := range records {
-	// 	allRecords = append(allRecords, v1alpha1.DomainRecords{
-	// 		Name:     record.Name,
-	// 		Value:    record.Value,
-	// 		Type:     string(record.Type),
-	// 		Priority: record.Priority,
-	// 		TTL:      record.TTL,
-	// 	})
-	// }
-
-	// domain := v1alpha1.Domain{
-	// 	TypeMeta: metav1.TypeMeta{
-	// 		Kind:       "Domain",
-	// 		APIVersion: "opencp.io/v1alpha1",
-	// 	},
-	// 	ObjectMeta: metav1.ObjectMeta{
-	// 		Name: dnsDomain.Name,
-	// 		// CreationTimestamp: metav1.Time{Time: vm.CreatedAt},
-	// 		Annotations: map[string]string{
-	// 			corev1.LastAppliedConfigAnnotation: lasyApply,
-	// 		},
-	// 		UID: types.UID(dnsDomain.ID),
-	// 	},
-	// 	Spec: v1alpha1.DomainSpec{
-	// 		Records: allRecords,
-	// 	},
-	// 	Status: v1alpha1.DomainStatus{
-	// 		State: "ready",
-	// 	},
-	// }
-
 	domainSpec := opencpapi.DomainSpec{}
-	domainStatus := &opencpapi.DomainStatus{}
+	domainStatus := opencpapi.DomainStatus{}
 
 	pkg.CopyTo(domain.Spec, &domainSpec)
 	pkg.CopyTo(domain.Status, &domainStatus)
@@ -244,7 +201,7 @@ func (d *Domain) Get(r *restful.Request, w *restful.Response) {
 		},
 		ObjectMeta: *domain.Metadata,
 		Spec: &domainSpec,
-		Status: domainStatus,
+		Status: &domainStatus,
 	}
 
 	// print the request method and path
@@ -274,11 +231,6 @@ func (d *Domain) Create(r *restful.Request, w *restful.Response) {
 		log.Fatalf("error: %v", err)
 	}
 
-	// err = etcdObjectReader.SetStoredCustomResource("", domainOpenCP.Name, domainOpenCP.Annotations[corev1.LastAppliedConfigAnnotation])
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
 	// Createn the domain
 	domain, err := app.Domain.CreateDomain(r.Request.Context(), domainOpenCP)
 	if err != nil {
@@ -287,77 +239,8 @@ func (d *Domain) Create(r *restful.Request, w *restful.Response) {
 		return
 	}
 
-	// // Create the records
-	// if len(domainOpenCP.Spec.Records) > 0 {
-	// 	for _, record := range domainOpenCP.Spec.Records {
-	// 		recordConfig := &civogo.DNSRecordConfig{
-	// 			Type:     civogo.DNSRecordType(record.Type),
-	// 			Name:     record.Name,
-	// 			Value:    record.Value,
-	// 			Priority: record.Priority,
-	// 			TTL:      record.TTL,
-	// 		}
-	// 		_, err := client.CreateDNSRecord(domain.ID, recordConfig)
-	// 		if err != nil {
-	// 			respondStatus := pkg.RespondError(apiRequestInfo, "error creating record")
-	// 			w.WriteAsJson(respondStatus)
-	// 			return
-	// 		}
-	// 	}
-	// }
-
-	// Get last applied config
-	// lasyApply, err := etcdObjectReader.GetStoredCustomResource("", domainOpenCP.Name)
-	// if err != nil {
-	// 	if errors.Is(err, pkg.ErrNotFound) {
-	// 		log.Println(err)
-	// 		// Add to etcd
-	// 	}
-	// }
-
-	// Get all the records
-	// records, err := client.ListDNSRecords(domain.ID)
-	// if err != nil {
-	// 	respondStatus := pkg.RespondError(apiRequestInfo, "error finding records")
-	// 	w.WriteAsJson(respondStatus)
-	// 	return
-	// }
-
-	// allRecords := []v1alpha1.DomainRecords{}
-	// for _, record := range records {
-	// 	allRecords = append(allRecords, v1alpha1.DomainRecords{
-	// 		Name:     record.Name,
-	// 		Value:    record.Value,
-	// 		Type:     string(record.Type),
-	// 		Priority: record.Priority,
-	// 		TTL:      record.TTL,
-	// 	})
-	// }
-
-	// domainRespond := v1alpha1.Domain{
-	// 	TypeMeta: metav1.TypeMeta{
-	// 		Kind:       "Domain",
-	// 		APIVersion: "opencp.io/v1alpha1",
-	// 	},
-	// 	ObjectMeta: metav1.ObjectMeta{
-	// 		Name:      domain.Name,
-	// 		Namespace: apiRequestInfo.Namespace,
-	// 		Annotations: map[string]string{
-	// 			corev1.LastAppliedConfigAnnotation: lasyApply,
-	// 		},
-	// 		// CreationTimestamp: metav1.Time{Time: firewall.CreatedAt},
-	// 		UID: types.UID(domain.ID),
-	// 	},
-	// 	Spec: v1alpha1.DomainSpec{
-	// 		Records: allRecords,
-	// 	},
-	// 	Status: v1alpha1.DomainStatus{
-	// 		State: "ready",
-	// 	},
-	// }
-
 	domainSpec := opencpapi.DomainSpec{}
-	domainStatus := &opencpapi.DomainStatus{}
+	domainStatus := opencpapi.DomainStatus{}
 
 	pkg.CopyTo(domain.Spec, &domainSpec)
 	pkg.CopyTo(domain.Status, &domainStatus)
@@ -369,7 +252,7 @@ func (d *Domain) Create(r *restful.Request, w *restful.Response) {
 		},
 		ObjectMeta: *domain.Metadata,
 		Spec: &domainSpec,
-		Status: domainStatus,
+		Status: &domainStatus,
 	}
 
 	// print the request method and path
@@ -417,12 +300,6 @@ func (d *Domain) Delete(r *restful.Request, w *restful.Response) {
 				UID:   domain.Metadata.UID,
 			},
 		}
-
-		// Delete from etcd
-		// _, err := etcdObjectReader.DeleteStoredCustomResource("", apiRequestInfo.Name)
-		// if err != nil {
-		// 	log.Println(err)
-		// }
 	}
 
 	if domain == nil {

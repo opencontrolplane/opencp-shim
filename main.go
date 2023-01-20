@@ -40,6 +40,7 @@ func main() {
 	app.Domain = setup.Domain(app.Config)
 	app.SSHkey = setup.SSHKey(app.Config)
 	app.Firewall = setup.Firewall(app.Config)
+	app.IP = setup.IP(app.Config)
 
 	// We add the app as attribute to the request
 	restful.DefaultContainer.Filter(func(r *restful.Request, w *restful.Response, chain *restful.FilterChain) {

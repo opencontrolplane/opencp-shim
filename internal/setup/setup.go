@@ -26,6 +26,7 @@ type OpenCPApp struct {
 	Domain            opencpspec.DomainServiceClient
 	SSHkey            opencpspec.SSHKeyServiceClient
 	Firewall          opencpspec.FirewallServiceClient
+	IP                opencpspec.IpServiceClient
 }
 
 func NewAOpenCP() *OpenCPApp {
@@ -123,4 +124,14 @@ func Firewall(config config.Config) opencpspec.FirewallServiceClient {
 
 	FirewallClient := opencpspec.NewFirewallServiceClient(conn)
 	return FirewallClient
+}
+
+func IP(config config.Config) opencpspec.IpServiceClient {
+	conn, err := grpc.Dial(config.GrpcServer.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		klog.Fatalf("could not connect: %v", err)
+	}
+
+	IPClient := opencpspec.NewIpServiceClient(conn)
+	return IPClient
 }

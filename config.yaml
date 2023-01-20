@@ -82,24 +82,24 @@ ApiResource:
     Verbs:
       - "get"
     Namespaced: false
-  # - Kind: "IP"
-  #   SingularName: "ip"
-  #   Name: "ips"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "create"
-  #     - "delete"
-  #     - "get"
-  #     - "list"
-  #   Namespaced: false
-  #   ShortNames:
-  #     - "ip"
-  # - Kind: "IP"
-  #   Name: "ips/status"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "get"
-  #   Namespaced: false
+  - Kind: "IP"
+    SingularName: "ip"
+    Name: "ips"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: false
+    ShortNames:
+      - "ip"
+  - Kind: "IP"
+    Name: "ips/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: false
   - Kind: "SSHKey"
     SingularName: "sshkey"
     Name: "sshkeys"

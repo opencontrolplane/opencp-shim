@@ -8,7 +8,7 @@ require (
 	github.com/go-openapi/spec v0.20.4
 	github.com/google/gnostic v0.5.7-v3refs
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
-	github.com/opencontrolplane/opencp-spec v0.1.0
+	github.com/opencontrolplane/opencp-spec v0.1.1
 	github.com/prometheus/client_golang v1.14.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/slok/go-http-metrics v0.10.0

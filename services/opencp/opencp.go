@@ -7,6 +7,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/opencontrolplane/opencp-spec/apis/v1alpha1"
+
 	// clientv3 "go.etcd.io/etcd/client/v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -18,10 +19,10 @@ var (
 )
 
 type OpenCP struct {
-	Kubernetes KubernetesInterface
-	Domain     DomainInterface
-	Firewall   FirewallInterface
-	// IP                      IPInterface
+	Kubernetes     KubernetesInterface
+	Domain         DomainInterface
+	Firewall       FirewallInterface
+	IP             IPInterface
 	VirtualMachine VirtualMachineInterface
 	SSHKey         SSHKeyInterface
 	// ObjectStorage           ObjectStorageInterface
@@ -36,10 +37,10 @@ func init() {
 
 func NewOpenCP() *OpenCP {
 	return &OpenCP{
-		Kubernetes: NewKubernetes(),
-		Domain:     NewDomain(),
-		Firewall:   NewFirewall(),
-		// IP:                      NewIP(etcdClient),
+		Kubernetes:     NewKubernetes(),
+		Domain:         NewDomain(),
+		Firewall:       NewFirewall(),
+		IP:             NewIP(),
 		VirtualMachine: NewVirtualMachine(),
 		SSHKey:         NewSSHKey(),
 		// ObjectStorage:           NewObjectStorage(etcdClient),
@@ -55,7 +56,7 @@ func (c *OpenCP) OpenCP() []*restful.WebService {
 
 	c.KubernetesHandler()
 	c.VirtualMachineHandler()
-	// c.IPHandler()
+	c.IPHandler()
 	c.FirewallHandler()
 	c.DomainHandler()
 	c.SSHKeyHandler()
@@ -135,40 +136,39 @@ func (c *OpenCP) KubernetesHandler() {
 }
 
 // IP API Resource List
-// func (c *OpenCP) IPHandler() {
-// 	// IP
-// 	opencpAPI.Route(opencpAPI.GET("/ips").To(c.IP.List).
-// 		// Doc
-// 		Doc("get all civo ip").Operation("IPList").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Metadata("openapi.schemes", []string{"https"}).
-// 		Writes(v1alpha1.IPList{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.IPList{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.GET("/ips/{ipname}").To(c.IP.Get).
-// 		// Doc
-// 		Doc("create civo IP").Operation("IPGet").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Writes(v1alpha1.IP{}).
-// 		Param(opencpAPI.PathParameter("ipname", "name of the civo ip").DataType("string")).
-// 		Returns(http.StatusOK, "OK", v1alpha1.IP{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.DELETE("/ips/{ipname}").To(c.IP.Delete).
-// 		// Doc
-// 		Doc("delete civo IP").Operation("IPDelete").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Writes(metav1.Status{}).
-// 		Param(opencpAPI.PathParameter("ipname", "name of the civo ip").DataType("string")).
-// 		Returns(http.StatusOK, "OK", metav1.Status{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.POST("/ips").To(c.IP.Create).
-// 		// Doc
-// 		Doc("Create a civo IP").Operation("IPCreate").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Writes(v1alpha1.IP{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.IP{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// }
+func (c *OpenCP) IPHandler() {
+	// IP
+	opencpAPI.Route(opencpAPI.GET("/ips").To(c.IP.List).
+		// Doc
+		Doc("get all civo ip").Operation("IPList").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Writes(v1alpha1.IPList{}).
+		Returns(http.StatusOK, "OK", v1alpha1.IPList{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.GET("/ips/{ipname}").To(c.IP.Get).
+		// Doc
+		Doc("create civo IP").Operation("IPGet").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Writes(v1alpha1.IP{}).
+		Param(opencpAPI.PathParameter("ipname", "name of the ip").DataType("string")).
+		Returns(http.StatusOK, "OK", v1alpha1.IP{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.DELETE("/ips/{ipname}").To(c.IP.Delete).
+		// Doc
+		Doc("delete civo IP").Operation("IPDelete").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Writes(metav1.Status{}).
+		Param(opencpAPI.PathParameter("ipname", "name of the ip").DataType("string")).
+		Returns(http.StatusOK, "OK", metav1.Status{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.POST("/ips").To(c.IP.Create).
+		// Doc
+		Doc("Create a civo IP").Operation("IPCreate").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Writes(v1alpha1.IP{}).
+		Returns(http.StatusOK, "OK", v1alpha1.IP{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+}
 
 // VirtualMachine Resource List
 func (c *OpenCP) VirtualMachineHandler() {
