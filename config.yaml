@@ -119,60 +119,60 @@ ApiResource:
     Verbs:
       - "get"
     Namespaced: false
-  # - Kind: "ObjectStorage"
-  #   SingularName: "objectstorage"
-  #   Name: "objectstorages"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "create"
-  #     - "delete"
-  #     - "get"
-  #     - "list"
-  #   Namespaced: false
-  #   ShortNames:
-  #     - "s3"
-  #     - "objectstorage"
-  # - Kind: "ObjectStorage"
-  #   Name: "objectstorages/status"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "get"
-  #   Namespaced: false
-  # - Kind: "ObjectStorageCredential"
-  #   SingularName: "objectstoragecredential"
-  #   Name: "objectstoragecredentials"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "create"
-  #     - "delete"
-  #     - "get"
-  #     - "list"
-  #   Namespaced: false
-  #   ShortNames:
-  #     - "s3credential"
-  #     - "objectstoragecredential"
-  # - Kind: "ObjectStorageCredential"
-  #   Name: "objectstoragecredentials/status"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "get"
-  #   Namespaced: false
-  # - Kind: "Database"
-  #   SingularName: "database"
-  #   Name: "databases"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "create"
-  #     - "delete"
-  #     - "get"
-  #     - "list"
-  #   Namespaced: true
-  #   ShortNames:
-  #     - "db"
-  #     - "dbass"
-  # - Kind: "Database"
-  #   Name: "databases/status"
-  #   Version: "v1alpha1"
-  #   Verbs:
-  #     - "get"
-  #   Namespaced: true
+  - Kind: "ObjectStorage"
+    SingularName: "objectstorage"
+    Name: "objectstorages"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: false
+    ShortNames:
+      - "s3"
+      - "objectstorage"
+  - Kind: "ObjectStorage"
+    Name: "objectstorages/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: false
+  - Kind: "ObjectStorageCredential"
+    SingularName: "objectstoragecredential"
+    Name: "objectstoragecredentials"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: false
+    ShortNames:
+      - "s3credential"
+      - "objectstoragecredential"
+  - Kind: "ObjectStorageCredential"
+    Name: "objectstoragecredentials/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: false
+  - Kind: "Database"
+    SingularName: "database"
+    Name: "databases"
+    Version: "v1alpha1"
+    Verbs:
+      - "create"
+      - "delete"
+      - "get"
+      - "list"
+    Namespaced: true
+    ShortNames:
+      - "db"
+      - "dbass"
+  - Kind: "Database"
+    Name: "databases/status"
+    Version: "v1alpha1"
+    Verbs:
+      - "get"
+    Namespaced: true

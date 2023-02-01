@@ -221,22 +221,14 @@ func (p *IP) Delete(r *restful.Request, w *restful.Response) {
 	}
 
 	respondStatus := metav1.Status{}
-	q := apiRequestInfo.Name
-	ip, err := app.IP.GetIp(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &q})
+	ip, err := app.IP.DeleteIp(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error finding IP")
+		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting IP")
 		w.WriteAsJson(respondStatus)
 		return
 	}
 
 	if ip != nil {
-		_, err = app.IP.DeleteIp(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &ip.Metadata.Name})
-		if err != nil {
-			respondStatus = pkg.RespondError(apiRequestInfo, "error deleting IP")
-			w.WriteAsJson(respondStatus)
-			return
-		}
-
 		respondStatus = metav1.Status{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       "Status",

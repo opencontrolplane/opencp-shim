@@ -1,0 +1,27 @@
+version: '3'
+services:
+  shim:
+    image: civobot/opencp-shim:latest
+    platform: linux/amd64
+    ports:
+      - "4000:4000"
+    environment:
+      - SSL=true
+      - GRPC_SERVER=192.168.86.47:8080
+    depends_on:
+      - opencp
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+  opencp:
+    image: civobot/opencp:latest
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+    environment:
+      - REGION=lon1
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure

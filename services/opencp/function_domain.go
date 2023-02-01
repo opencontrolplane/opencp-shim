@@ -118,8 +118,8 @@ func (d *Domain) List(r *restful.Request, w *restful.Response) {
 				APIVersion: "opencp.io/v1alpha1",
 			},
 			ObjectMeta: *domain.Metadata,
-			Spec: &domainSpec,
-			Status: domainStatus,
+			Spec:       &domainSpec,
+			Status:     domainStatus,
 		}
 
 		domainList = append(domainList, *singleDomain)
@@ -200,8 +200,8 @@ func (d *Domain) Get(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *domain.Metadata,
-		Spec: &domainSpec,
-		Status: &domainStatus,
+		Spec:       &domainSpec,
+		Status:     &domainStatus,
 	}
 
 	// print the request method and path
@@ -251,8 +251,8 @@ func (d *Domain) Create(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *domain.Metadata,
-		Spec: &domainSpec,
-		Status: &domainStatus,
+		Spec:       &domainSpec,
+		Status:     &domainStatus,
 	}
 
 	// print the request method and path
@@ -271,22 +271,14 @@ func (d *Domain) Delete(r *restful.Request, w *restful.Response) {
 	}
 
 	respondStatus := metav1.Status{}
-	q := apiRequestInfo.Name
-	domain, err := app.Domain.GetDomain(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &q})
+	domain, err := app.Domain.DeleteDomain(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error finding domain")
+		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting domain")
 		w.WriteAsJson(respondStatus)
 		return
 	}
 
 	if domain != nil {
-		_, err = app.Domain.DeleteDomain(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &domain.Metadata.Name})
-		if err != nil {
-			respondStatus = pkg.RespondError(apiRequestInfo, "error deleting domain")
-			w.WriteAsJson(respondStatus)
-			return
-		}
-
 		respondStatus = metav1.Status{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       "Status",

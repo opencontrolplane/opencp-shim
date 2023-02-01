@@ -213,14 +213,6 @@ func (k *Kubernetes) Get(r *restful.Request, w *restful.Response) {
 		return
 	}
 
-	// lasyApply, err := etcdObjectReader.GetStoredCustomResource(network.Label, cluster.Name)
-	// if err != nil {
-	// 	if errors.Is(err, pkg.ErrNotFound) {
-	// 		log.Println(err)
-	// 		// Add to etcd
-	// 	}
-	// }
-
 	var emptyKubernetesSpec v1alpha1.KubernetesClusterSpec
 	var emptyKubernetesStatus v1alpha1.KubernetesClusterStatus
 

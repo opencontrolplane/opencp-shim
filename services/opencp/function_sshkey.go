@@ -53,7 +53,7 @@ func (s *SSHKey) List(r *restful.Request, w *restful.Response) {
 		}
 	}
 
-	// Get all the networks again and return them
+	// Get all the sshkey again and return them
 	var allSSHKey *opencpgrpc.SSHKeyList
 	if len(allFields) > 0 {
 		q := allFields["metadata.name"]
@@ -267,22 +267,14 @@ func (s *SSHKey) Delete(r *restful.Request, w *restful.Response) {
 	}
 
 	respondStatus := metav1.Status{}
-	q := apiRequestInfo.Name
-	sshkey, err := app.SSHkey.GetSSHKey(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &q})
+	sshkey, err := app.SSHkey.DeleteSSHKey(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error finding sshkey")
+		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting sshkey")
 		w.WriteAsJson(respondStatus)
 		return
 	}
 
 	if sshkey != nil {
-		_, err = app.SSHkey.DeleteSSHKey(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &sshkey.Metadata.Name})
-		if err != nil {
-			respondStatus = pkg.RespondError(apiRequestInfo, "error deleting sshkey")
-			w.WriteAsJson(respondStatus)
-			return
-		}
-
 		respondStatus = metav1.Status{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       "Status",

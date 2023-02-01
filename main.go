@@ -9,13 +9,14 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
 	middleware "github.com/opencontrolplane/opencp-shim/internal/middleware"
-	setup "github.com/opencontrolplane/opencp-shim/internal/setup"
 	openapi "github.com/opencontrolplane/opencp-shim/internal/openapi"
+	setup "github.com/opencontrolplane/opencp-shim/internal/setup"
 
 	// API
 	apis "github.com/opencontrolplane/opencp-shim/services/apis"
 	core "github.com/opencontrolplane/opencp-shim/services/core"
 	opencp "github.com/opencontrolplane/opencp-shim/services/opencp"
+
 	// "k8s.io/apiserver/pkg/storage/storagebackend"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -41,6 +42,9 @@ func main() {
 	app.SSHkey = setup.SSHKey(app.Config)
 	app.Firewall = setup.Firewall(app.Config)
 	app.IP = setup.IP(app.Config)
+	app.Database = setup.Database(app.Config)
+	app.ObjectStorage = setup.ObjectStorage(app.Config)
+	app.ObjectStorageCredential = setup.ObjectStorageCredential(app.Config)
 
 	// We add the app as attribute to the request
 	restful.DefaultContainer.Filter(func(r *restful.Request, w *restful.Response, chain *restful.FilterChain) {

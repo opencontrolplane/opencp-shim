@@ -19,16 +19,15 @@ var (
 )
 
 type OpenCP struct {
-	Kubernetes     KubernetesInterface
-	Domain         DomainInterface
-	Firewall       FirewallInterface
-	IP             IPInterface
-	VirtualMachine VirtualMachineInterface
-	SSHKey         SSHKeyInterface
-	// ObjectStorage           ObjectStorageInterface
-	// ObjectStorageCredential ObjectStorageCredentialInterface
-	// Database                DatabaseInterface
-	// DB                      pkg.SecretInterface
+	Kubernetes              KubernetesInterface
+	Domain                  DomainInterface
+	Firewall                FirewallInterface
+	IP                      IPInterface
+	VirtualMachine          VirtualMachineInterface
+	SSHKey                  SSHKeyInterface
+	ObjectStorage           ObjectStorageInterface
+	ObjectStorageCredential ObjectStorageCredentialInterface
+	Database                DatabaseInterface
 }
 
 func init() {
@@ -37,15 +36,15 @@ func init() {
 
 func NewOpenCP() *OpenCP {
 	return &OpenCP{
-		Kubernetes:     NewKubernetes(),
-		Domain:         NewDomain(),
-		Firewall:       NewFirewall(),
-		IP:             NewIP(),
-		VirtualMachine: NewVirtualMachine(),
-		SSHKey:         NewSSHKey(),
-		// ObjectStorage:           NewObjectStorage(etcdClient),
-		// ObjectStorageCredential: NewObjectStorageCredential(etcdClient),
-		// Database:                NewDatabase(etcdClient, db),
+		Kubernetes:              NewKubernetes(),
+		Domain:                  NewDomain(),
+		Firewall:                NewFirewall(),
+		IP:                      NewIP(),
+		VirtualMachine:          NewVirtualMachine(),
+		SSHKey:                  NewSSHKey(),
+		ObjectStorage:           NewObjectStorage(),
+		ObjectStorageCredential: NewObjectStorageCredential(),
+		Database:                NewDatabase(),
 	}
 }
 
@@ -60,9 +59,9 @@ func (c *OpenCP) OpenCP() []*restful.WebService {
 	c.FirewallHandler()
 	c.DomainHandler()
 	c.SSHKeyHandler()
-	// c.ObjectStorageHandler()
-	// c.ObjectStorageCredentialHandler()
-	// c.DatabaseHandler()
+	c.ObjectStorageHandler()
+	c.ObjectStorageCredentialHandler()
+	c.DatabaseHandler()
 
 	return []*restful.WebService{opencpAPI}
 }
@@ -364,140 +363,140 @@ func (c *OpenCP) SSHKeyHandler() {
 }
 
 // ObjectStorage Resource List
-// func (c *OpenCP) ObjectStorageHandler() {
-// 	opencpAPI.Route(opencpAPI.GET("/objectstorages").To(c.ObjectStorage.List).
-// 		// Doc
-// 		Doc("List all object storages").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Operation("ObjectStorageList").
-// 		Writes(v1alpha1.ObjectStorageList{}).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageList{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.GET("/objectstorages/{objectstorage}").To(c.ObjectStorage.Get).
-// 		// Doc
-// 		Doc("Get a ObjectStorage").Operation("ObjectStorageGet").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("objectstorage", "name of the objectstorage").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
-// 		Writes(v1alpha1.ObjectStorage{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorage{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.POST("/objectstorages").To(c.ObjectStorage.Create).
-// 		// Doc
-// 		Doc("Create a ObjectStorage").Operation("ObjectStorageCreate").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		AddExtension("x-kubernetes-action", "post").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
-// 		Writes(v1alpha1.ObjectStorage{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorage{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.DELETE("/objectstorages/{objectstorage}").To(c.ObjectStorage.Delete).
-// 		// Doc
-// 		Doc("Delete a ObjectStorage").Operation("ObjectStorageDelete").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("objectstorage", "name of objectstorage").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "delete").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
-// 		Returns(http.StatusOK, "OK", metav1.Status{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// }
+func (c *OpenCP) ObjectStorageHandler() {
+	opencpAPI.Route(opencpAPI.GET("/objectstorages").To(c.ObjectStorage.List).
+		// Doc
+		Doc("List all object storages").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Operation("ObjectStorageList").
+		Writes(v1alpha1.ObjectStorageList{}).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageList{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.GET("/objectstorages/{objectstorage}").To(c.ObjectStorage.Get).
+		// Doc
+		Doc("Get a ObjectStorage").Operation("ObjectStorageGet").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("objectstorage", "name of the objectstorage").DataType("string")).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
+		Writes(v1alpha1.ObjectStorage{}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorage{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.POST("/objectstorages").To(c.ObjectStorage.Create).
+		// Doc
+		Doc("Create a ObjectStorage").Operation("ObjectStorageCreate").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		AddExtension("x-kubernetes-action", "post").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
+		Writes(v1alpha1.ObjectStorage{}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorage{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.DELETE("/objectstorages/{objectstorage}").To(c.ObjectStorage.Delete).
+		// Doc
+		Doc("Delete a ObjectStorage").Operation("ObjectStorageDelete").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("objectstorage", "name of objectstorage").DataType("string")).
+		AddExtension("x-kubernetes-action", "delete").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorage"}).
+		Returns(http.StatusOK, "OK", metav1.Status{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+}
 
 // ObjectStorage Credential Resource List
-// func (c *OpenCP) ObjectStorageCredentialHandler() {
-// 	opencpAPI.Route(opencpAPI.GET("/objectstoragecredentials").To(c.ObjectStorageCredential.List).
-// 		// Doc
-// 		Doc("List all object storages credentials").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Operation("ObjectStorageCredentialList").
-// 		Writes(v1alpha1.ObjectStorageCredentialList{}).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredentialList{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.GET("/objectstoragecredentials/{credential}").To(c.ObjectStorageCredential.Get).
-// 		// Doc
-// 		Doc("Get a ObjectStorage Credential").Operation("ObjectStorageCredentialGet").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("credential", "name of the objectstorage credential").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
-// 		Writes(v1alpha1.ObjectStorageCredential{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredential{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.POST("/objectstoragecredentials").To(c.ObjectStorageCredential.Create).
-// 		// Doc
-// 		Doc("Create a ObjectStorage Credential").Operation("ObjectStorageCredentialCreate").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		AddExtension("x-kubernetes-action", "post").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
-// 		Writes(v1alpha1.ObjectStorageCredential{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredential{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.DELETE("/objectstoragecredentials/{credential}").To(c.ObjectStorageCredential.Delete).
-// 		// Doc
-// 		Doc("Delete a ObjectStorage Credential").Operation("ObjectStorageCredentialDelete").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("credential", "name of objectstorage credential").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "delete").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
-// 		Returns(http.StatusOK, "OK", metav1.Status{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// }
+func (c *OpenCP) ObjectStorageCredentialHandler() {
+	opencpAPI.Route(opencpAPI.GET("/objectstoragecredentials").To(c.ObjectStorageCredential.List).
+		// Doc
+		Doc("List all object storages credentials").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Operation("ObjectStorageCredentialList").
+		Writes(v1alpha1.ObjectStorageCredentialList{}).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredentialList{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.GET("/objectstoragecredentials/{credential}").To(c.ObjectStorageCredential.Get).
+		// Doc
+		Doc("Get a ObjectStorage Credential").Operation("ObjectStorageCredentialGet").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("credential", "name of the objectstorage credential").DataType("string")).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
+		Writes(v1alpha1.ObjectStorageCredential{}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredential{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.POST("/objectstoragecredentials").To(c.ObjectStorageCredential.Create).
+		// Doc
+		Doc("Create a ObjectStorage Credential").Operation("ObjectStorageCredentialCreate").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		AddExtension("x-kubernetes-action", "post").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
+		Writes(v1alpha1.ObjectStorageCredential{}).
+		Returns(http.StatusOK, "OK", v1alpha1.ObjectStorageCredential{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.DELETE("/objectstoragecredentials/{credential}").To(c.ObjectStorageCredential.Delete).
+		// Doc
+		Doc("Delete a ObjectStorage Credential").Operation("ObjectStorageCredentialDelete").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("credential", "name of objectstorage credential").DataType("string")).
+		AddExtension("x-kubernetes-action", "delete").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "ObjectStorageCredential"}).
+		Returns(http.StatusOK, "OK", metav1.Status{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+}
 
 // Database Resource List
-// func (c *OpenCP) DatabaseHandler() {
-// 	opencpAPI.Route(opencpAPI.GET("/databases").To(c.Database.List).
-// 		// Doc
-// 		Doc("List all databases").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Operation("DatabasesList").
-// 		Writes(v1alpha1.DatabaseList{}).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.DatabaseList{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.GET("/namespaces/{namespace}/databases").To(c.Database.List).
-// 		// Doc
-// 		Doc("List all databases by namespaces").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Operation("DatabasesNamespacesList").
-// 		Writes(v1alpha1.DatabaseList{}).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.DatabaseList{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.GET("/namespaces/{namespace}/databases/{database}").To(c.Database.Get).
-// 		// Doc
-// 		Doc("Get a database in a namespace").Operation("DatabaseGetByNamespace").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
-// 		Param(opencpAPI.PathParameter("database", "name of the database").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "get").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
-// 		Writes(v1alpha1.Database{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.Database{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.POST("/namespaces/{namespace}/databases").To(c.Database.Create).
-// 		// Doc
-// 		Doc("Create a database in a namespace").Operation("DatabaseCreateByNamespace").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "post").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
-// 		Writes(v1alpha1.Database{}).
-// 		Returns(http.StatusOK, "OK", v1alpha1.Database{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// 	opencpAPI.Route(opencpAPI.DELETE("/namespaces/{namespace}/databases/{database}").To(c.Database.Delete).
-// 		// Doc
-// 		Doc("Delete a database in a namespace").Operation("DatabaseDeleteByNamespace").
-// 		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
-// 		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
-// 		Param(opencpAPI.PathParameter("firewall", "name of database").DataType("string")).
-// 		AddExtension("x-kubernetes-action", "delete").
-// 		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
-// 		Returns(http.StatusOK, "OK", metav1.Status{}).
-// 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
-// }
+func (c *OpenCP) DatabaseHandler() {
+	opencpAPI.Route(opencpAPI.GET("/databases").To(c.Database.List).
+		// Doc
+		Doc("List all databases").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Operation("DatabasesList").
+		Writes(v1alpha1.DatabaseList{}).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
+		Returns(http.StatusOK, "OK", v1alpha1.DatabaseList{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.GET("/namespaces/{namespace}/databases").To(c.Database.List).
+		// Doc
+		Doc("List all databases by namespaces").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Operation("DatabasesNamespacesList").
+		Writes(v1alpha1.DatabaseList{}).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
+		Returns(http.StatusOK, "OK", v1alpha1.DatabaseList{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.GET("/namespaces/{namespace}/databases/{database}").To(c.Database.Get).
+		// Doc
+		Doc("Get a database in a namespace").Operation("DatabaseGetByNamespace").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
+		Param(opencpAPI.PathParameter("database", "name of the database").DataType("string")).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
+		Writes(v1alpha1.Database{}).
+		Returns(http.StatusOK, "OK", v1alpha1.Database{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.POST("/namespaces/{namespace}/databases").To(c.Database.Create).
+		// Doc
+		Doc("Create a database in a namespace").Operation("DatabaseCreateByNamespace").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
+		AddExtension("x-kubernetes-action", "post").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
+		Writes(v1alpha1.Database{}).
+		Returns(http.StatusOK, "OK", v1alpha1.Database{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	opencpAPI.Route(opencpAPI.DELETE("/namespaces/{namespace}/databases/{database}").To(c.Database.Delete).
+		// Doc
+		Doc("Delete a database in a namespace").Operation("DatabaseDeleteByNamespace").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"opencpIo_v1alpha1"}).
+		Param(opencpAPI.PathParameter("namespace", "namespace of the database").DataType("string")).
+		Param(opencpAPI.PathParameter("firewall", "name of database").DataType("string")).
+		AddExtension("x-kubernetes-action", "delete").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "opencp.io", Version: "v1alpha1", Kind: "Database"}).
+		Returns(http.StatusOK, "OK", metav1.Status{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
+}

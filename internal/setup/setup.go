@@ -15,18 +15,21 @@ import (
 )
 
 type OpenCPApp struct {
-	Config            config.Config
-	Token             string
-	Context           context.Context
-	EtcdClient        *clientv3.Client
-	Namespace         opencpspec.NamespaceServiceClient
-	LoginClient       opencpspec.LoginClient
-	VirtualMachine    opencpspec.VirtualMachineServiceClient
-	KubernetesCluster opencpspec.KubernetesClusterServiceClient
-	Domain            opencpspec.DomainServiceClient
-	SSHkey            opencpspec.SSHKeyServiceClient
-	Firewall          opencpspec.FirewallServiceClient
-	IP                opencpspec.IpServiceClient
+	Config                  config.Config
+	Token                   string
+	Context                 context.Context
+	EtcdClient              *clientv3.Client
+	Namespace               opencpspec.NamespaceServiceClient
+	LoginClient             opencpspec.LoginClient
+	VirtualMachine          opencpspec.VirtualMachineServiceClient
+	KubernetesCluster       opencpspec.KubernetesClusterServiceClient
+	Domain                  opencpspec.DomainServiceClient
+	SSHkey                  opencpspec.SSHKeyServiceClient
+	Firewall                opencpspec.FirewallServiceClient
+	IP                      opencpspec.IpServiceClient
+	Database                opencpspec.DatabaseServiceClient
+	ObjectStorage           opencpspec.ObjectStorageServiceClient
+	ObjectStorageCredential opencpspec.ObjectStorageCredentialServiceClient
 }
 
 func NewAOpenCP() *OpenCPApp {
@@ -134,4 +137,34 @@ func IP(config config.Config) opencpspec.IpServiceClient {
 
 	IPClient := opencpspec.NewIpServiceClient(conn)
 	return IPClient
+}
+
+func Database(config config.Config) opencpspec.DatabaseServiceClient {
+	conn, err := grpc.Dial(config.GrpcServer.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		klog.Fatalf("could not connect: %v", err)
+	}
+
+	databaseClient := opencpspec.NewDatabaseServiceClient(conn)
+	return databaseClient
+}
+
+func ObjectStorage(config config.Config) opencpspec.ObjectStorageServiceClient {
+	conn, err := grpc.Dial(config.GrpcServer.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		klog.Fatalf("could not connect: %v", err)
+	}
+
+	objectStorageClient := opencpspec.NewObjectStorageServiceClient(conn)
+	return objectStorageClient
+}
+
+func ObjectStorageCredential(config config.Config) opencpspec.ObjectStorageCredentialServiceClient {
+	conn, err := grpc.Dial(config.GrpcServer.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		klog.Fatalf("could not connect: %v", err)
+	}
+
+	objectStorageCredentialClient := opencpspec.NewObjectStorageCredentialServiceClient(conn)
+	return objectStorageCredentialClient
 }

@@ -95,22 +95,23 @@ func (a APIServer) ResourceList(r *restful.Request, w *restful.Response) {
 				Verbs:        []string{"get"},
 				Namespaced:   false,
 			},
-			{
-				Kind:         "Secret",
-				SingularName: "",
-				Name:         "secrets",
-				// Verbs:        []string{"create", "delete", "get", "list"},
-				Verbs:      []string{"get", "list"},
-				Namespaced: true,
-				ShortNames: []string{"secret"},
-			},
-			{
-				Kind:         "Secret",
-				SingularName: "",
-				Name:         "secrets/status",
-				Verbs:        []string{"get"},
-				Namespaced:   true,
-			},
+			// TYhis is commented out because we don't want to allow the user to create secrets yet
+			// {
+			// 	Kind:         "Secret",
+			// 	SingularName: "",
+			// 	Name:         "secrets",
+			// 	// Verbs:        []string{"create", "delete", "get", "list"},
+			// 	Verbs:      []string{"get", "list"},
+			// 	Namespaced: true,
+			// 	ShortNames: []string{"secret"},
+			// },
+			// {
+			// 	Kind:         "Secret",
+			// 	SingularName: "",
+			// 	Name:         "secrets/status",
+			// 	Verbs:        []string{"get"},
+			// 	Namespaced:   true,
+			// },
 		},
 	}
 
@@ -119,7 +120,7 @@ func (a APIServer) ResourceList(r *restful.Request, w *restful.Response) {
 }
 
 func (a APIServer) Events(r *restful.Request, w *restful.Response) {
-	
+
 	resolver := pkg.RequestInfoResolver()
 	apiRequestInfo, err := resolver.NewRequestInfo(r.Request)
 	if err != nil {
