@@ -4,32 +4,27 @@ import (
 	// "log"
 	"net/http"
 
-	// "git.civo.com/alejandro/api-v3/pkg"
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
-	// clientv3 "go.etcd.io/etcd/client/v3"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	// opencpspec "github.com/opencontrolplane/opencp-spec/v1alpha1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
+
+var (
+	opencpAPI *restful.WebService
 )
 
 type Core struct {
-	// EtcdClient *clientv3.Client
 	Network   NetworkInterface
-	// Secret    SecretInterface
+	Secret    SecretInterface
 	APIServer APIInterface
 }
 
 func NewCore() *Core {
-	// DB Init
-	// db, err := pkg.NewSecretService()
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
 	return &Core{
 		Network:   NewNetwork(),
-		// Secret:    NewSecret(etcdClient, db),
+		Secret:    NewSecret(),
 		APIServer: NewAPIServer(),
 	}
 }
@@ -89,27 +84,17 @@ func (c Core) API() []*restful.WebService {
 		Returns(http.StatusUnauthorized, "Unauthorized", nil))
 
 	// Secrets API
-	// api.Route(api.GET("/v1/secrets").To(c.Secret.List).
-	// 	//Doc
-	// 	Doc("list or watch objects of kind Secret").Operation("listSecretForAllNamespaces").
-	// 	Writes(corev1.SecretList{}).
-	// 	Returns(http.StatusOK, "OK", corev1.SecretList{}).
-	// 	Returns(http.StatusUnauthorized, "Unauthorized", nil))
-	// api.Route(api.GET("/v1/namespaces/{namespace}/secrets").To(c.Secret.List).
-	// 	//Doc
-	// 	Doc("list or watch objects of kind Secret").Operation("listSecretForAllNamespaces").
-	// 	Param(api.PathParameter("namespace", "name of the Namespace").DataType("string")).
-	// 	Writes(corev1.SecretList{}).
-	// 	Returns(http.StatusOK, "OK", corev1.SecretList{}).
-	// 	Returns(http.StatusUnauthorized, "Unauthorized", nil))
-	// api.Route(api.GET("/v1/namespaces/{namespace}/secrets/{secret}").To(c.Secret.Get).
-	// 	//Doc
-	// 	Doc("Get a single Secret").Operation("getSecret").
-	// 	Param(api.PathParameter("namespace", "name of the Namespace").DataType("string")).
-	// 	Param(api.PathParameter("secret", "name of the Secret").DataType("string")).
-	// 	Writes(corev1.Secret{}).
-	// 	Returns(http.StatusOK, "OK", corev1.Secret{}).
-	// 	Returns(http.StatusUnauthorized, "Unauthorized", nil))
+	api.Route(api.GET("/v1/namespaces/{namespace}/secrets/{secret}").To(c.Secret.Get).
+		//Doc
+		Doc("Get a secret in a namespace").Operation("SecretByNamespace").
+		Metadata(restfulspec.KeyOpenAPITags, []string{"k8sIo_v1"}).
+		Param(opencpAPI.PathParameter("namespace", "namespace of the kubernetes cluster").DataType("string")).
+		Param(opencpAPI.PathParameter("secret", "the secret name").DataType("string")).
+		AddExtension("x-kubernetes-action", "get").
+		AddExtension("x-kubernetes-group-version-kind", schema.GroupVersionKind{Group: "k8s.io", Version: "v1", Kind: "Secret"}).
+		Writes(corev1.Secret{}).
+		Returns(http.StatusOK, "OK", corev1.Secret{}).
+		Returns(http.StatusUnauthorized, "Unauthorized", nil))
 
 	return []*restful.WebService{api}
 }

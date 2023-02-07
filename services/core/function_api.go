@@ -95,23 +95,22 @@ func (a APIServer) ResourceList(r *restful.Request, w *restful.Response) {
 				Verbs:        []string{"get"},
 				Namespaced:   false,
 			},
-			// TYhis is commented out because we don't want to allow the user to create secrets yet
-			// {
-			// 	Kind:         "Secret",
-			// 	SingularName: "",
-			// 	Name:         "secrets",
-			// 	// Verbs:        []string{"create", "delete", "get", "list"},
-			// 	Verbs:      []string{"get", "list"},
-			// 	Namespaced: true,
-			// 	ShortNames: []string{"secret"},
-			// },
-			// {
-			// 	Kind:         "Secret",
-			// 	SingularName: "",
-			// 	Name:         "secrets/status",
-			// 	Verbs:        []string{"get"},
-			// 	Namespaced:   true,
-			// },
+			{
+				Kind:         "Secret",
+				SingularName: "",
+				Name:         "secrets",
+				// Verbs:        []string{"create", "delete", "get", "list"},
+				Verbs:      []string{"get"},
+				Namespaced: true,
+				ShortNames: []string{"secret"},
+			},
+			{
+				Kind:         "Secret",
+				SingularName: "",
+				Name:         "secrets/status",
+				Verbs:        []string{"get"},
+				Namespaced:   true,
+			},
 		},
 	}
 

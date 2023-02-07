@@ -259,14 +259,8 @@ github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e h1:fD57ERR4JtEqsWb
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/onsi/ginkgo/v2 v2.4.0 h1:+Ig9nvqgS5OBSACXNk15PLdp0U9XPYROt9CFzVdFGIs=
 github.com/onsi/gomega v1.23.0 h1:/oxKu9c2HVap+F3PfKort2Hw5DEU+HGlW8n+tguWsys=
-github.com/opencontrolplane/opencp-spec v0.1.0 h1:LCwL230UbOwJNz2gPnsNHYCfG1ZDAd+x+h+xqMtY+7E=
-github.com/opencontrolplane/opencp-spec v0.1.0/go.mod h1:F7CLNDq6HDLj9g84ecWzVMJRwsd3LtTwYY6ebh9UvTs=
-github.com/opencontrolplane/opencp-spec v0.1.1 h1:EEoud923w0eu4gyJZr+0K4Bdb0J4Q2+wI/Pg8IezLA0=
-github.com/opencontrolplane/opencp-spec v0.1.1/go.mod h1:F7CLNDq6HDLj9g84ecWzVMJRwsd3LtTwYY6ebh9UvTs=
-github.com/opencontrolplane/opencp-spec v0.1.2 h1:G6hQl3QOHzFu6DJmIaKR+M2npv4MOTpGNoR4d89Z54w=
-github.com/opencontrolplane/opencp-spec v0.1.2/go.mod h1:F7CLNDq6HDLj9g84ecWzVMJRwsd3LtTwYY6ebh9UvTs=
-github.com/opencontrolplane/opencp-spec v0.1.3 h1:kn/K8lAiIC+CRWTwLsCK2WhRL83WYEDdem3HkmWcXvU=
-github.com/opencontrolplane/opencp-spec v0.1.3/go.mod h1:F7CLNDq6HDLj9g84ecWzVMJRwsd3LtTwYY6ebh9UvTs=
+github.com/opencontrolplane/opencp-spec v0.1.8 h1:hB3OIghjO68qRGjUZkjpxKWNOXdN2bUbrlNvQZ77XZU=
+github.com/opencontrolplane/opencp-spec v0.1.8/go.mod h1:F7CLNDq6HDLj9g84ecWzVMJRwsd3LtTwYY6ebh9UvTs=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=

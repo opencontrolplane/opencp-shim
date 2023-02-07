@@ -220,17 +220,9 @@ func (n Network) Create(r *restful.Request, w *restful.Response) {
 	// Get the app config
 	app := r.Attribute("app").(*setup.OpenCPApp)
 
-	// resolver := pkg.RequestInfoResolver()
-	// apiRequestInfo, err := resolver.NewRequestInfo(r.Request)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
 	body, err := io.ReadAll(r.Request.Body)
 	if err != nil {
 		log.Printf("Error reading body: %v", err)
-		// http.Error(w, "can't read body", http.StatusBadRequest)
-		// return
 	}
 
 	namespace := &opencpspec.Namespace{}
@@ -238,11 +230,6 @@ func (n Network) Create(r *restful.Request, w *restful.Response) {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-
-	// err = etcdObjectReader.SetStoredCustomResource("cluster", namespace.Name, namespace.Annotations[corev1.LastAppliedConfigAnnotation])
-	// if err != nil {
-	// 	log.Println(err)
-	// }
 
 	// Create the network
 	network, err := app.Namespace.CreateNamespace(r.Request.Context(), namespace)
