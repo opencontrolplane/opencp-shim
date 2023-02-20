@@ -42,7 +42,7 @@ func (s *Secret) Get(r *restful.Request, w *restful.Response) {
 	}
 
 	coreSecret := &corev1.Secret{
-		TypeMeta:   metav1.TypeMeta{
+		TypeMeta: metav1.TypeMeta{
 			Kind:       "Secret",
 			APIVersion: "v1",
 		},
@@ -53,10 +53,10 @@ func (s *Secret) Get(r *restful.Request, w *restful.Response) {
 				Time: cluster.Metadata.CreationTimestamp.Time,
 			},
 		},
-		Data:       map[string][]byte{
+		Data: map[string][]byte{
 			"kubeconfig": []byte(cluster.Spec.Kubeconfig),
 		},
-		Type:       "Opaque",
+		Type: "Opaque",
 	}
 
 	if coreSecret.Name == "" {

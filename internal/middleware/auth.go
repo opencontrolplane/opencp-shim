@@ -7,8 +7,8 @@ import (
 	restful "github.com/emicklei/go-restful/v3"
 	setup "github.com/opencontrolplane/opencp-shim/internal/setup"
 	opencpspec "github.com/opencontrolplane/opencp-spec/grpc"
-	"google.golang.org/grpc/status"
 	grpcMetadata "google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 )
 
 func Authenticate(r *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
@@ -32,7 +32,7 @@ func Authenticate(r *restful.Request, resp *restful.Response, chain *restful.Fil
 	// Modify the ctx to add the token to check if the token is valid
 	ctx := r.Request.Context()
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+apiKey)
-	
+
 	//Call the auth service to check if the token is valid
 	validToken, err := app.LoginClient.Check(ctx, &opencpspec.LoginRequest{Token: apiKey})
 	if err != nil {

@@ -88,7 +88,6 @@ func (n Network) List(r *restful.Request, w *restful.Response) {
 		})
 	}
 
-
 	networkList := corev1.NamespaceList{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "NamespaceList",
@@ -208,8 +207,8 @@ func (n Network) Delete(r *restful.Request, w *restful.Response) {
 			APIVersion: "v1",
 		},
 		ObjectMeta: *network.Metadata,
-		Spec: *network.Spec,
-		Status: *network.Status,
+		Spec:       *network.Spec,
+		Status:     *network.Status,
 	}
 
 	// print the request method and path

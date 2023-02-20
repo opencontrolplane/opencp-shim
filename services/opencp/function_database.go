@@ -205,8 +205,8 @@ func (d *Database) Get(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *db.Metadata,
-		Spec: emptyDatabaseSpec,
-		Status: emptyDatabaseStatus,
+		Spec:       emptyDatabaseSpec,
+		Status:     emptyDatabaseStatus,
 	}
 
 	// print the request method and path
@@ -238,7 +238,7 @@ func (d *Database) Create(r *restful.Request, w *restful.Response) {
 
 	// Create the database
 	db, err := app.Database.CreateDatabase(r.Request.Context(), &databaseOpenCP)
-    if err!= nil {
+	if err != nil {
 		log.Println(err)
 		w.WriteAsJson(pkg.RespondError(apiRequestInfo, "error creating database"))
 		return
@@ -256,8 +256,8 @@ func (d *Database) Create(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *db.Metadata,
-		Spec: emptyDatabaseSpec,
-		Status: emptyDatabaseStatus,
+		Spec:       emptyDatabaseSpec,
+		Status:     emptyDatabaseStatus,
 	}
 
 	w.WriteAsJson(database)
@@ -301,7 +301,7 @@ func (d *Database) Delete(r *restful.Request, w *restful.Response) {
 	if db == nil {
 		respondStatus = pkg.RespondNotFound(apiRequestInfo)
 	}
-	
+
 	// print the request method and path
 	w.WriteAsJson(respondStatus)
 }

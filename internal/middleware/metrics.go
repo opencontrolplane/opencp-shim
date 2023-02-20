@@ -7,7 +7,6 @@ import (
 	gorestfulmiddleware "github.com/slok/go-http-metrics/middleware/gorestful"
 )
 
-
 func Metrics() restful.FilterFunction {
 	mdlw := middleware.New(middleware.Config{
 		Recorder: metrics.NewRecorder(metrics.Config{}),

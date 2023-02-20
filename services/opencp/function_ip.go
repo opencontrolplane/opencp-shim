@@ -120,8 +120,8 @@ func (p *IP) List(r *restful.Request, w *restful.Response) {
 				APIVersion: "opencp.io/v1alpha1",
 			},
 			ObjectMeta: *ip.Metadata,
-			Spec: ipSpec,
-			Status: ipStatus,
+			Spec:       ipSpec,
+			Status:     ipStatus,
 		}
 
 		ipList = append(ipList, *singleIP)

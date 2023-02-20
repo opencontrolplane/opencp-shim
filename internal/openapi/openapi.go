@@ -10,12 +10,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opencontrolplane/opencp-shim/internal/handler"
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/go-openapi/spec"
 	openapi_v2 "github.com/google/gnostic/openapiv2"
 	"github.com/munnerz/goautoneg"
+	"github.com/opencontrolplane/opencp-shim/internal/handler"
 	"google.golang.org/protobuf/proto"
 )
 

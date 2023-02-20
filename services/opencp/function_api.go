@@ -1,15 +1,15 @@
 package opencp
 
 import (
-	setup "github.com/opencontrolplane/opencp-shim/internal/setup"
 	restful "github.com/emicklei/go-restful/v3"
+	setup "github.com/opencontrolplane/opencp-shim/internal/setup"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func (c *OpenCP) apiResourceListv1alpha1(r *restful.Request, w *restful.Response) {
 	// Get the app config
 	app := r.Attribute("app").(*setup.OpenCPApp)
-	
+
 	APIResourcesList := []metav1.APIResource{}
 	for _, resource := range app.Config.ApiResource {
 		APIResourcesList = append(APIResourcesList, metav1.APIResource{
