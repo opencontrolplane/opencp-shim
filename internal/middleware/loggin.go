@@ -40,7 +40,6 @@ func Logging(r *restful.Request, resp *restful.Response, chain *restful.FilterCh
 	chain.ProcessFilter(r, resp)
 }
 
-
 // RequestGetRemoteAddress returns ip address of the client making the request,
 // taking into account http proxies
 func requestGetRemoteAddress(r *http.Request) string {

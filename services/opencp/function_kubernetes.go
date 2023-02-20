@@ -75,7 +75,7 @@ func (k *Kubernetes) List(r *restful.Request, w *restful.Response) {
 		tableRow := []metav1.TableRow{}
 		for _, cluster := range kubernetesClusterList.Items {
 			cell := metav1.TableRow{
-				Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, cluster.Metadata.CreationTimestamp},
+				Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)},
 				Object: runtime.RawExtension{
 					Object: &metav1.PartialObjectMetadata{
 						TypeMeta: metav1.TypeMeta{
@@ -104,7 +104,7 @@ func (k *Kubernetes) List(r *restful.Request, w *restful.Response) {
 				{Name: "Pools", Type: "string", Format: "string", Description: "Pool count (from spec)"},
 				{Name: "Public IP", Type: "string", Format: "string", Description: "Public IP of the instance"},
 				{Name: "State", Type: "string", Format: "string", Description: "State of the Cluster"},
-				{Name: "Age", Type: "date", Format: "date", Description: "Time running"},
+				{Name: "Age", Type: "string", Format: "date-time", Description: "Time running"},
 			},
 			Rows: tableRow,
 		}
@@ -189,7 +189,7 @@ func (k *Kubernetes) Get(r *restful.Request, w *restful.Response) {
 
 	if pkg.CheckHeader(r) {
 		tableRow := []metav1.TableRow{}
-		cell := metav1.TableRow{Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, cluster.Metadata.CreationTimestamp}}
+		cell := metav1.TableRow{Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)}}
 		tableRow = append(tableRow, cell)
 
 		list := metav1.Table{
@@ -203,7 +203,7 @@ func (k *Kubernetes) Get(r *restful.Request, w *restful.Response) {
 				{Name: "Pools", Type: "string", Format: "string", Description: "Pool count (from spec)"},
 				{Name: "Public IP", Type: "string", Format: "string", Description: "Public IP of the instance"},
 				{Name: "State", Type: "string", Format: "string", Description: "State of the Cluster"},
-				{Name: "Age", Type: "date", Format: "date", Description: "Time running"},
+				{Name: "Age", Type: "string", Format: "date-time", Description: "Time running"},
 			},
 			Rows: tableRow,
 		}
@@ -225,8 +225,8 @@ func (k *Kubernetes) Get(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *cluster.Metadata,
-		Spec: emptyKubernetesSpec,
-		Status: emptyKubernetesStatus,
+		Spec:       emptyKubernetesSpec,
+		Status:     emptyKubernetesStatus,
 	}
 
 	// print the request method and path
@@ -277,8 +277,8 @@ func (k *Kubernetes) Create(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *cluster.Metadata,
-		Spec: emptyKubernetesSpec,
-		Status: emptyKubernetesStatus,
+		Spec:       emptyKubernetesSpec,
+		Status:     emptyKubernetesStatus,
 	}
 
 	w.WriteAsJson(k3sCluster)

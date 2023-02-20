@@ -16,7 +16,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 type ObjectStorageInterface interface {
 	List(r *restful.Request, w *restful.Response)
 	Get(r *restful.Request, w *restful.Response)
@@ -117,8 +116,8 @@ func (s *ObjectStorage) List(r *restful.Request, w *restful.Response) {
 				APIVersion: "opencp.io/v1alpha1",
 			},
 			ObjectMeta: *objectstorage.Metadata,
-			Spec: objStorageSpec,
-			Status: objStorageStatus,
+			Spec:       objStorageSpec,
+			Status:     objStorageStatus,
 		}
 
 		objectstorageList = append(objectstorageList, obstorage)
@@ -199,8 +198,8 @@ func (s *ObjectStorage) Get(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *objectstorage.Metadata,
-		Spec: objStorageSpec,
-		Status: objStorageStatus,
+		Spec:       objStorageSpec,
+		Status:     objStorageStatus,
 	}
 
 	// print the request method and path
@@ -250,8 +249,8 @@ func (s *ObjectStorage) Create(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *objectstorage.Metadata,
-		Spec: objStorageSpec,
-		Status: objStorageStatus,
+		Spec:       objStorageSpec,
+		Status:     objStorageStatus,
 	}
 	w.WriteAsJson(obstorageRespond)
 }

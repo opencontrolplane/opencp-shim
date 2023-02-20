@@ -16,7 +16,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 type ObjectStorageCredentialInterface interface {
 	List(r *restful.Request, w *restful.Response)
 	Get(r *restful.Request, w *restful.Response)
@@ -118,8 +117,8 @@ func (s *ObjectStorageCredential) List(r *restful.Request, w *restful.Response) 
 				APIVersion: "opencp.io/v1alpha1",
 			},
 			ObjectMeta: *objectstorage.Metadata,
-			Spec: objStorageCredentialSpec,
-			Status: objStorageCredentialStatus,
+			Spec:       objStorageCredentialSpec,
+			Status:     objStorageCredentialStatus,
 		}
 
 		objectstorageCredentialList = append(objectstorageCredentialList, obstorageCredential)
@@ -200,8 +199,8 @@ func (s *ObjectStorageCredential) Get(r *restful.Request, w *restful.Response) {
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *objectstorageCredential.Metadata,
-		Spec: objStorageCredentialSpec,
-		Status: objStorageCredentialStatus,
+		Spec:       objStorageCredentialSpec,
+		Status:     objStorageCredentialStatus,
 	}
 
 	// print the request method and path
@@ -251,8 +250,8 @@ func (s *ObjectStorageCredential) Create(r *restful.Request, w *restful.Response
 			APIVersion: "opencp.io/v1alpha1",
 		},
 		ObjectMeta: *objectstorageCredential.Metadata,
-		Spec: objStorageCredentialSpec,
-		Status: objStorageCredentialStatus,
+		Spec:       objStorageCredentialSpec,
+		Status:     objStorageCredentialStatus,
 	}
 
 	// print the request method and path
