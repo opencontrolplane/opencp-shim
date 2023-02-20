@@ -25,6 +25,3 @@ jobs:
           tags: |
             civobot/opencp-shim:${{  github.ref_name }}
             civobot/opencp-shim:latest
-          build-args: |
-            ACCESS_TOKEN_USR=${{ secrets.ACCESS_TOKEN_USR }}
-            ACCESS_TOKEN_PWD=${{ secrets.ACCESS_TOKEN_PWD }}
