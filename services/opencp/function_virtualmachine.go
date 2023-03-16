@@ -358,7 +358,7 @@ func (v *VirtualMachine) Delete(r *restful.Request, w *restful.Response) {
 	// Send to delete the virtual machine
 	virtualMachine, err := app.VirtualMachine.DeleteVirtualMachine(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error deleting the virtual machine")
+		respondStatus := pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting the virtual machine", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

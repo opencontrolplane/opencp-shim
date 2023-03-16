@@ -75,7 +75,7 @@ func (k *Kubernetes) List(r *restful.Request, w *restful.Response) {
 		tableRow := []metav1.TableRow{}
 		for _, cluster := range kubernetesClusterList.Items {
 			cell := metav1.TableRow{
-				Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)},
+				Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.PublicIP, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)},
 				Object: runtime.RawExtension{
 					Object: &metav1.PartialObjectMetadata{
 						TypeMeta: metav1.TypeMeta{
@@ -189,7 +189,7 @@ func (k *Kubernetes) Get(r *restful.Request, w *restful.Response) {
 
 	if pkg.CheckHeader(r) {
 		tableRow := []metav1.TableRow{}
-		cell := metav1.TableRow{Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.Publicip, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)}}
+		cell := metav1.TableRow{Cells: []interface{}{cluster.Metadata.Name, cluster.Metadata.UID, len(cluster.Spec.Pools), cluster.Status.PublicIP, cluster.Status.State, pkg.TimeDiff(cluster.Metadata.CreationTimestamp.Time)}}
 		tableRow = append(tableRow, cell)
 
 		list := metav1.Table{
@@ -259,7 +259,7 @@ func (k *Kubernetes) Create(r *restful.Request, w *restful.Response) {
 	// Create the cluster
 	cluster, err := app.KubernetesCluster.CreateKubernetesCluster(r.Request.Context(), &kubernetesCluster)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error creating the kubernetes cluster")
+		respondStatus := pkg.RespondError(apiRequestInfo, kubernetesCluster.Metadata.Name, "error creating the kubernetes cluster", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -307,7 +307,7 @@ func (k *Kubernetes) Delete(r *restful.Request, w *restful.Response) {
 	// Send to delete the cluster
 	cluster, err := app.KubernetesCluster.DeleteKubernetesCluster(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleteing the kubernetes cluster")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleteing the kubernetes cluster", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

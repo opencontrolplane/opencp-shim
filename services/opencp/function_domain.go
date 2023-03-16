@@ -72,7 +72,7 @@ func (d *Domain) List(r *restful.Request, w *restful.Response) {
 	} else {
 		allDomains, err = app.Domain.ListDomains(r.Request.Context(), &opencpgrpc.FilterOptions{})
 		if err != nil {
-			respondStatus := pkg.RespondError(apiRequestInfo, "error listing domains")
+			respondStatus := pkg.RespondError(apiRequestInfo, "", "error listing domains", err)
 			w.WriteAsJson(respondStatus)
 			return
 		}
@@ -234,7 +234,7 @@ func (d *Domain) Create(r *restful.Request, w *restful.Response) {
 	// Createn the domain
 	domain, err := app.Domain.CreateDomain(r.Request.Context(), domainOpenCP)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error finding domain")
+		respondStatus := pkg.RespondError(apiRequestInfo, domainOpenCP.Metadata.Name, "error finding domain", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -273,7 +273,7 @@ func (d *Domain) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	domain, err := app.Domain.DeleteDomain(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting domain")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting domain", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

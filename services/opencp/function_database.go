@@ -240,7 +240,7 @@ func (d *Database) Create(r *restful.Request, w *restful.Response) {
 	db, err := app.Database.CreateDatabase(r.Request.Context(), &databaseOpenCP)
 	if err != nil {
 		log.Println(err)
-		w.WriteAsJson(pkg.RespondError(apiRequestInfo, "error creating database"))
+		w.WriteAsJson(pkg.RespondError(apiRequestInfo, databaseOpenCP.Metadata.Name, "error creating database", err))
 		return
 	}
 
@@ -277,7 +277,7 @@ func (d *Database) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	db, err := app.Database.DeleteDatabase(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleteing the database")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleteing the database", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

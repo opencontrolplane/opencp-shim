@@ -70,7 +70,7 @@ func (s *ObjectStorageCredential) List(r *restful.Request, w *restful.Response) 
 	} else {
 		allObjectStorageCredential, err = app.ObjectStorageCredential.ListObjectStorageCredential(r.Request.Context(), &opencpgrpc.FilterOptions{})
 		if err != nil {
-			respondStatus := pkg.RespondError(apiRequestInfo, "error listing object storage credential")
+			respondStatus := pkg.RespondError(apiRequestInfo, "", "error listing object storage credential", err)
 			w.WriteAsJson(respondStatus)
 			return
 		}
@@ -80,7 +80,7 @@ func (s *ObjectStorageCredential) List(r *restful.Request, w *restful.Response) 
 		tableRow := []metav1.TableRow{}
 		for _, objectstorageCredential := range allObjectStorageCredential.Items {
 			tableRow = append(tableRow, metav1.TableRow{
-				Cells: []interface{}{objectstorageCredential.Metadata.Name, objectstorageCredential.Metadata.UID, objectstorageCredential.Spec.Accesskey, objectstorageCredential.Status.State},
+				Cells: []interface{}{objectstorageCredential.Metadata.Name, objectstorageCredential.Metadata.UID, objectstorageCredential.Spec.AccessKey, objectstorageCredential.Status.State},
 			})
 		}
 
@@ -165,7 +165,7 @@ func (s *ObjectStorageCredential) Get(r *restful.Request, w *restful.Response) {
 
 	if pkg.CheckHeader(r) {
 		tableRow := []metav1.TableRow{}
-		cell := metav1.TableRow{Cells: []interface{}{objectstorageCredential.Metadata.Name, objectstorageCredential.Metadata.UID, objectstorageCredential.Spec.Accesskey, objectstorageCredential.Status.State}}
+		cell := metav1.TableRow{Cells: []interface{}{objectstorageCredential.Metadata.Name, objectstorageCredential.Metadata.UID, objectstorageCredential.Spec.AccessKey, objectstorageCredential.Status.State}}
 		tableRow = append(tableRow, cell)
 
 		list := metav1.Table{
@@ -233,7 +233,7 @@ func (s *ObjectStorageCredential) Create(r *restful.Request, w *restful.Response
 	// Createn the ObjectStore
 	objectstorageCredential, err := app.ObjectStorageCredential.CreateObjectStorageCredential(r.Request.Context(), &objectstorageCredentialOpenCP)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error creating the object storage credential")
+		respondStatus := pkg.RespondError(apiRequestInfo, objectstorageCredentialOpenCP.Metadata.Name, "error creating the object storage credential", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -272,7 +272,7 @@ func (s *ObjectStorageCredential) Delete(r *restful.Request, w *restful.Response
 	respondStatus := metav1.Status{}
 	objectstorageCredential, err := app.ObjectStorageCredential.DeleteObjectStorageCredential(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting Object Store Credential")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting Object Store Credential", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

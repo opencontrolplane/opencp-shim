@@ -18,6 +18,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apiserver/pkg/endpoints/request"
+	"google.golang.org/grpc/status"
 )
 
 // CheckHeader to see if contains table
@@ -46,17 +47,26 @@ func RespondNotFound(requestInfo *request.RequestInfo) metav1.Status {
 	return notFound
 }
 
-func RespondError(requestInfo *request.RequestInfo, reason string) metav1.Status {
+func RespondError(requestInfo *request.RequestInfo, name, reason string, err error) metav1.Status {
+	var errMessage string
+
+	statusErr, ok := status.FromError(err)
+	if ok {
+		errMessage = statusErr.Message()
+	} else {
+		errMessage = err.Error()
+	}
+
 	notFound := metav1.Status{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Status",
 			APIVersion: "v1",
 		},
 		Status:  string(metav1.StatusReasonInternalError),
-		Message: fmt.Sprintf("%s.%s \"%s\"", requestInfo.Resource, requestInfo.APIGroup, requestInfo.Name),
-		Reason:  metav1.StatusReason(reason),
+		Message: fmt.Sprintf("%s.%s \"%s\"", requestInfo.Resource, requestInfo.APIGroup, name),
+		Reason:  metav1.StatusReason(fmt.Sprintf("%s, %s", reason, errMessage)),
 		Details: &metav1.StatusDetails{
-			Name:  requestInfo.Name,
+			Name:  name,
 			Group: requestInfo.APIGroup,
 			Kind:  requestInfo.Resource,
 		},

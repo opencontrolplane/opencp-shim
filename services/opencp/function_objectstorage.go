@@ -70,7 +70,7 @@ func (s *ObjectStorage) List(r *restful.Request, w *restful.Response) {
 	} else {
 		allObjectStorage, err = app.ObjectStorage.ListObjectStorage(r.Request.Context(), &opencpgrpc.FilterOptions{})
 		if err != nil {
-			respondStatus := pkg.RespondError(apiRequestInfo, "error listing object storage")
+			respondStatus := pkg.RespondError(apiRequestInfo, "", "error listing object storage", err)
 			w.WriteAsJson(respondStatus)
 			return
 		}
@@ -232,7 +232,7 @@ func (s *ObjectStorage) Create(r *restful.Request, w *restful.Response) {
 	// Createn the ObjectStore
 	objectstorage, err := app.ObjectStorage.CreateObjectStorage(r.Request.Context(), &objectstorageOpenCP)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error creating the object storage")
+		respondStatus := pkg.RespondError(apiRequestInfo, objectstorageOpenCP.Metadata.Name, "error creating the object storage", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -269,7 +269,7 @@ func (s *ObjectStorage) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	objectstorage, err := app.ObjectStorage.DeleteObjectStorage(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting ObjectStore")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting ObjectStore", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

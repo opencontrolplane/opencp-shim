@@ -72,7 +72,7 @@ func (p *IP) List(r *restful.Request, w *restful.Response) {
 	} else {
 		allIPs, err = app.IP.ListIp(r.Request.Context(), &opencpgrpc.FilterOptions{})
 		if err != nil {
-			respondStatus := pkg.RespondError(apiRequestInfo, "error listing ips")
+			respondStatus := pkg.RespondError(apiRequestInfo, "", "error listing ips", err)
 			w.WriteAsJson(respondStatus)
 			return
 		}
@@ -223,7 +223,7 @@ func (p *IP) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	ip, err := app.IP.DeleteIp(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting IP")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting IP", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -276,7 +276,7 @@ func (p *IP) Create(r *restful.Request, w *restful.Response) {
 
 	ip, err := app.IP.CreateIp(r.Request.Context(), ipOpenCP)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error finding domain")
+		respondStatus := pkg.RespondError(apiRequestInfo, ipOpenCP.Metadata.Name, "error finding domain", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
