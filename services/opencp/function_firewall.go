@@ -74,7 +74,7 @@ func (f *Firewall) List(r *restful.Request, w *restful.Response) {
 		tableRow := []metav1.TableRow{}
 		for _, fw := range allFirewall.Items {
 			cell := metav1.TableRow{
-				Cells: []interface{}{fw.Metadata.Name, fw.Metadata.UID, fw.Status.Totalrules, fw.Status.State},
+				Cells: []interface{}{fw.Metadata.Name, fw.Metadata.UID, fw.Status.TotalRules, fw.Status.State},
 				Object: runtime.RawExtension{
 					Object: &metav1.PartialObjectMetadata{
 						TypeMeta: metav1.TypeMeta{
@@ -163,7 +163,7 @@ func (f *Firewall) Get(r *restful.Request, w *restful.Response) {
 
 	if pkg.CheckHeader(r) {
 		tableRow := []metav1.TableRow{}
-		cell := metav1.TableRow{Cells: []interface{}{fw.Metadata.Name, fw.Metadata.UID, fw.Status.Totalrules, fw.Status.State}}
+		cell := metav1.TableRow{Cells: []interface{}{fw.Metadata.Name, fw.Metadata.UID, fw.Status.TotalRules, fw.Status.State}}
 		tableRow = append(tableRow, cell)
 
 		list := metav1.Table{
@@ -232,7 +232,7 @@ func (f *Firewall) Create(r *restful.Request, w *restful.Response) {
 	fw, err := app.Firewall.CreateFirewall(r.Request.Context(), &firewallOpenCP)
 	if err != nil {
 		log.Println(err)
-		w.WriteAsJson(pkg.RespondError(apiRequestInfo, "error creating firewall"))
+		w.WriteAsJson(pkg.RespondError(apiRequestInfo, firewallOpenCP.Metadata.Name, "error creating firewall", err))
 		return
 	}
 
@@ -270,7 +270,7 @@ func (f *Firewall) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	fw, err := app.Firewall.DeleteFirewall(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleteing the firewall")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleteing the firewall", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}

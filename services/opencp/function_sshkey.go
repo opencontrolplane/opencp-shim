@@ -70,7 +70,7 @@ func (s *SSHKey) List(r *restful.Request, w *restful.Response) {
 	} else {
 		allSSHKey, err = app.SSHkey.ListSSHKey(r.Request.Context(), &opencpgrpc.FilterOptions{})
 		if err != nil {
-			respondStatus := pkg.RespondError(apiRequestInfo, "error listing sshkeys")
+			respondStatus := pkg.RespondError(apiRequestInfo, "", "error listing sshkeys", err)
 			w.WriteAsJson(respondStatus)
 			return
 		}
@@ -232,7 +232,7 @@ func (s *SSHKey) Create(r *restful.Request, w *restful.Response) {
 	// Createn the sshkey
 	sshKey, err := app.SSHkey.CreateSSHKey(r.Request.Context(), &sshkeyOpenCP)
 	if err != nil {
-		respondStatus := pkg.RespondError(apiRequestInfo, "error creating ssh key")
+		respondStatus := pkg.RespondError(apiRequestInfo, sshkeyOpenCP.Metadata.Name, "error creating ssh key", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
@@ -269,7 +269,7 @@ func (s *SSHKey) Delete(r *restful.Request, w *restful.Response) {
 	respondStatus := metav1.Status{}
 	sshkey, err := app.SSHkey.DeleteSSHKey(r.Request.Context(), &opencpgrpc.FilterOptions{Name: &apiRequestInfo.Name})
 	if err != nil {
-		respondStatus = pkg.RespondError(apiRequestInfo, "error deleting sshkey")
+		respondStatus = pkg.RespondError(apiRequestInfo, apiRequestInfo.Name, "error deleting sshkey", err)
 		w.WriteAsJson(respondStatus)
 		return
 	}
